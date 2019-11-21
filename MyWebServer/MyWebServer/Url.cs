@@ -28,7 +28,12 @@ namespace MyWebServer
         {
             get
             {
-                return path;
+                if (rawUrl == null)
+                {
+                    rawUrl = "";
+                }
+                string[] tmp = rawUrl.Split('?');
+                return tmp[0];
             }
         }
 
@@ -36,14 +41,25 @@ namespace MyWebServer
         {
             get
             {
-                if (path==null)
+                if (parameterDict == null)
                 {
-                    path = "";
+                    parameterDict = new Dictionary<string, string>();
+                    if (rawUrl == null)
+                    {
+                        rawUrl = "";
+                    }
+                    string[] tmp = rawUrl.Split('?');
+                    if (tmp.Length == 2)
+                    {
+                        string[] tmp2 = tmp[1].Split('&');
+                        for (int i = 0; i < tmp2.Length; i++)
+                        {
+                            string[] tmp3 = tmp2[i].Split('=');
+                            parameterDict.Add(tmp3[0], tmp3[1]);
+                        }
+                    }
                 }
-                string[] tmp = path.Split('?');
-                string[] tmp2 = tmp[1].Split('&');
-                parameterDict.Add("tmp2", tmp2.ToString());
-                return parameterDict;
+                    return parameterDict;
             }
         }
 
@@ -51,12 +67,7 @@ namespace MyWebServer
         {
             get
             {
-                if (parameterDict.Count!=0)
-                {
-                    int paraCount = parameterDict.Count;
-                    return paraCount;
-                }
-                return 0;
+                return Parameter.Count;
             }
         }
 
@@ -64,9 +75,9 @@ namespace MyWebServer
         {
             get
             {
-                if (path==null)
+                if (rawUrl==null)
                 {
-                    path = "";
+                    rawUrl = "";
                 }
                 List<string> resultList = new List<string>();
                 segments = path.Split('/');
@@ -126,9 +137,9 @@ namespace MyWebServer
         {
             get
             {
-                if (path == null)
+                if (rawUrl == null)
                 {
-                    path = "";
+                    rawUrl = "";
                 }
                 if (segments[segments.Length - 1].Contains(".") == false)
                 {
