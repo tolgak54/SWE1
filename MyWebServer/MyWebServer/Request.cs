@@ -8,26 +8,82 @@ namespace MyWebServer
 {
     class Request : IRequest
     {
-        public bool IsValid => throw new NotImplementedException();
+        Stream sRequest;
+        bool isValid;
+        string method;
+        string userAgent;
+        int contentLength;
+        int headerCount;
+        string contentType;
+        Url myUrl;
+        string contentString;
+        Stream contentStream;
+        byte[] contentBytes;
+        Dictionary<string, string> headers;
 
-        public string Method => throw new NotImplementedException();
+        public Request (Stream request)
+        {
+            this.sRequest = request;
+        }
+        public bool GetIsValid()
+        {
+            if (sRequest==null)
+            {
+                isValid = false;
+                return isValid;
+            }
+            isValid = true;
+            return isValid;
+        }
 
-        public IUrl Url => throw new NotImplementedException();
+        public string GetMethod()
+        {
+            throw new NotImplementedException();
+        }
 
-        public IDictionary<string, string> Headers => throw new NotImplementedException();
+        public IUrl GetUrl()
+        {
+            throw new NotImplementedException();
+        }
 
-        public string UserAgent => throw new NotImplementedException();
+        public IDictionary<string, string> GetHeaders()
+        {
+            throw new NotImplementedException();
+        }
 
-        public int HeaderCount => throw new NotImplementedException();
+        public string GetUserAgent()
+        {
+            throw new NotImplementedException();
+        }
 
-        public int ContentLength => throw new NotImplementedException();
+        public int GetHeaderCount()
+        {
+            throw new NotImplementedException();
+        }
 
-        public string ContentType => throw new NotImplementedException();
+        public int GetContentLength()
+        {
+            throw new NotImplementedException();
+        }
 
-        public Stream ContentStream => throw new NotImplementedException();
+        public string GetContentType()
+        {
+            throw new NotImplementedException();
+        }
 
-        public string ContentString => throw new NotImplementedException();
+        public Stream GetContentStream()
+        {
+            throw new NotImplementedException();
+        }
 
-        public byte[] ContentBytes => throw new NotImplementedException();
+        public string GetContentString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] GetContentBytes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

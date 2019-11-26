@@ -24,8 +24,8 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
         }
 
         [Test]
@@ -33,9 +33,9 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST", body: "x=a&y=b"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
-            Assert.That(obj.ContentLength, Is.EqualTo(7));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
+            Assert.That(obj.GetContentLength(), Is.EqualTo(7));
         }
 
         [Test]
@@ -43,9 +43,9 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST", body: "x=a&y=b"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
-            Assert.That(obj.ContentType, Is.EqualTo("application/x-www-form-urlencoded"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
+            Assert.That(obj.GetContentType(), Is.EqualTo("application/x-www-form-urlencoded"));
         }
 
         [Test]
@@ -53,12 +53,12 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST", body: "x=a&y=b"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
-            Assert.That(obj.ContentStream, Is.Not.Null);
-            Assert.That(obj.ContentStream.Length, Is.EqualTo(7));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
+            Assert.That(obj.GetContentStream(), Is.Not.Null);
+            Assert.That(obj.GetContentStream().Length, Is.EqualTo(7));
             byte[] bodyBytes = new byte[7];
-            obj.ContentStream.Read(bodyBytes, 0, 7);
+            obj.GetContentStream().Read(bodyBytes, 0, 7);
             var body = Encoding.UTF8.GetString(bodyBytes);
             Assert.That(body, Is.EqualTo("x=a&y=b"));
         }
@@ -68,9 +68,9 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST", body: "x=a&y=b"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
-            Assert.That(obj.ContentString, Is.EqualTo("x=a&y=b"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
+            Assert.That(obj.GetContentString(), Is.EqualTo("x=a&y=b"));
         }
 
         [Test]
@@ -78,11 +78,11 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST", body: "x=a&y=b"));
             Assert.That(obj, Is.Not.Null, "IUEB4.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
-            Assert.That(obj.ContentBytes, Is.Not.Null);
-            Assert.That(obj.ContentBytes.Length, Is.EqualTo(7));
-            var body = Encoding.UTF8.GetString(obj.ContentBytes);
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
+            Assert.That(obj.GetContentBytes(), Is.Not.Null);
+            Assert.That(obj.GetContentBytes().Length, Is.EqualTo(7));
+            var body = Encoding.UTF8.GetString(obj.GetContentBytes());
             Assert.That(body, Is.EqualTo("x=a&y=b"));
         }
         #endregion

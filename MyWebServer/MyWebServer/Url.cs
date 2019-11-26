@@ -23,7 +23,6 @@ namespace MyWebServer
                 return rawUrl;
             }
         }
-
         public string Path
         {
             get
@@ -32,11 +31,23 @@ namespace MyWebServer
                 {
                     rawUrl = "";
                 }
+                if (rawUrl.Contains("?")==true)
+                {
+                    return PathTwo;
+                }
+                string[] temp2 = rawUrl.Split('#');
+                return temp2[0];
+            }
+        }
+
+        public string PathTwo
+        {
+            get
+            {
                 string[] tmp = rawUrl.Split('?');
                 return tmp[0];
             }
         }
-
         public IDictionary<string, string> Parameter
         {
             get
@@ -80,11 +91,12 @@ namespace MyWebServer
                     rawUrl = "";
                 }
                 List<string> resultList = new List<string>();
-                segments = path.Split('/');
-                if (segments.Length <= 0)
-                {
-                    segments[0] = "0";
-                }
+                string temp = rawUrl.Remove(0, 1);
+                segments = temp.Split('/');
+                //if (segments.Length <= 0)
+                //{
+                //    segments[0] = "0";
+                //}
                 foreach (var item in segments)
                 {
                     resultList.Add(item);
@@ -135,18 +147,18 @@ namespace MyWebServer
 
         public string Fragment
         {
-            get
+            get 
             {
                 if (rawUrl == null)
                 {
                     rawUrl = "";
                 }
-                if (segments[segments.Length - 1].Contains(".") == false)
-                {
-                    return "";
-                }
-                string result = segments[segments.Length - 1];
-                string[] tmp = result.Split('#');
+                //if (segments[segments.Length - 1].Contains(".") == false)
+                //{
+                //    return "";
+                //}
+                //string result = segments[segments.Length - 1];
+                string[] tmp = rawUrl.Split('#');
                 string fragment = tmp[1];
                 return fragment;
             }

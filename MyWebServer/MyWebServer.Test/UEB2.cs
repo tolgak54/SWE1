@@ -64,7 +64,7 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
+            Assert.That(obj.GetIsValid(), Is.True);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetInvalidRequestStream());
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.False);
+            Assert.That(obj.GetIsValid(), Is.False);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetEmptyRequestStream());
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.False);
+            Assert.That(obj.GetIsValid(), Is.False);
         }
 
         [Test]
@@ -88,8 +88,8 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "GET"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("GET"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("GET"));
         }
 
         [Test]
@@ -97,8 +97,8 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "POST"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
         }
 
         [Test]
@@ -106,8 +106,8 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "post"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Method, Is.EqualTo("POST"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetMethod(), Is.EqualTo("POST"));
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", method: "FOO"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.False);
+            Assert.That(obj.GetIsValid(), Is.False);
         }
 
         [Test]
@@ -123,9 +123,9 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Url, Is.Not.Null);
-            Assert.That(obj.Url.RawUrl, Is.EqualTo("/"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetUrl(), Is.Not.Null);
+            Assert.That(obj.GetUrl().RawUrl, Is.EqualTo("/"));
         }
 
         [Test]
@@ -133,9 +133,9 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/foo.html?a=1&b=2"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Url, Is.Not.Null);
-            Assert.That(obj.Url.RawUrl, Is.EqualTo("/foo.html?a=1&b=2"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetUrl(), Is.Not.Null);
+            Assert.That(obj.GetUrl().RawUrl, Is.EqualTo("/foo.html?a=1&b=2"));
         }
         #endregion
 

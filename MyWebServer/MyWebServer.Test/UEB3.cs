@@ -51,10 +51,10 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB3.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Headers, Is.Not.Null);
-            Assert.That(obj.Headers.Count, Is.GreaterThan(0));
-            Assert.That(obj.HeaderCount, Is.GreaterThan(0));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetHeaders(), Is.Not.Null);
+            Assert.That(obj.GetHeaders().Count, Is.GreaterThan(0));
+            Assert.That(obj.GetHeaderCount(), Is.GreaterThan(0));
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB3.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Headers, Is.Not.Null);
-            Assert.That(obj.Headers.ContainsKey("user-agent"), Is.True);
-            Assert.That(obj.Headers["user-agent"], Is.EqualTo("Unit-Test-Agent/1.0 (The OS)"));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetHeaders(), Is.Not.Null);
+            Assert.That(obj.GetHeaders().ContainsKey("user-agent"), Is.True);
+            Assert.That(obj.GetHeaders()["user-agent"], Is.EqualTo("Unit-Test-Agent/1.0 (The OS)"));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace BIF.SWE1.UnitTests
 
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/", header: new[] { new[] { header, header_value } }));
             Assert.That(obj, Is.Not.Null, "IUEB3.GetRequest returned null");
-            Assert.That(obj.IsValid, Is.True);
-            Assert.That(obj.Headers, Is.Not.Null);
-            Assert.That(obj.Headers.ContainsKey(header), Is.True);
-            Assert.That(obj.Headers[header], Is.EqualTo(header_value));
+            Assert.That(obj.GetIsValid(), Is.True);
+            Assert.That(obj.GetHeaders(), Is.Not.Null);
+            Assert.That(obj.GetHeaders().ContainsKey(header), Is.True);
+            Assert.That(obj.GetHeaders()[header], Is.EqualTo(header_value));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace BIF.SWE1.UnitTests
         {
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB3.GetRequest returned null");
-            Assert.That(obj.UserAgent, Is.EqualTo("Unit-Test-Agent/1.0 (The OS)"));
+            Assert.That(obj.GetUserAgent(), Is.EqualTo("Unit-Test-Agent/1.0 (The OS)"));
         }
         #endregion
 
