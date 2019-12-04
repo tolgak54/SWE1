@@ -8,82 +8,149 @@ namespace MyWebServer
 {
     class Request : IRequest
     {
-        Stream sRequest;
         bool isValid;
+        string line;
+        StreamReader sr;
         string method;
         string userAgent;
+        int count = 0;
         int contentLength;
-        int headerCount;
         string contentType;
-        Url myUrl;
+        IUrl myUrl;
         string contentString;
         Stream contentStream;
         byte[] contentBytes;
+        string[] parameters;
         Dictionary<string, string> headers;
 
-        public Request (Stream request)
+        public Request(Stream request)
         {
-            this.sRequest = request;
+            sr = new StreamReader(request, Encoding.UTF8);
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    break;
+                }
+                parameters = line.Split(' ');
+                count++;
+            }
         }
         public bool GetIsValid()
         {
-            if (sRequest==null)
+            isValid = true;
+            if (count <= 0)
             {
                 isValid = false;
-                return isValid;
             }
-            isValid = true;
+
+            if (myUrl == null)
+            {
+                isValid = false;
+            }
             return isValid;
         }
 
         public string GetMethod()
         {
-            throw new NotImplementedException();
+            if (parameters.Length >= 1)
+            {
+                method = parameters[0].ToUpper();
+            }
+            return method;
         }
-
         public IUrl GetUrl()
         {
-            throw new NotImplementedException();
+            if (parameters.Length >= 2)
+            {
+                string url = line.Remove(0, line.IndexOf(' '));
+                url = url.Remove(url.LastIndexOf(' ')).Trim();
+                myUrl = new Url(url);
+            }
+            return myUrl;
         }
 
         public IDictionary<string, string> GetHeaders()
         {
-            throw new NotImplementedException();
+            if (headers == null)
+            {
+                headers = new Dictionary<string, string>();
+            }
+            if (line.Contains(":") && count > 0)
+            {
+                string[] headerData = line.Split(':');
+                string key = headerData[0].Trim().ToLower();
+                string value = headerData[1].Trim();
+                headers.Add(key, value);
+            }
+            return headers;
         }
-
         public string GetUserAgent()
         {
-            throw new NotImplementedException();
+            if (!headers.ContainsKey(userAgent))
+            {
+                userAgent = "";
+            }
+            return headers[userAgent];
         }
 
         public int GetHeaderCount()
         {
-            throw new NotImplementedException();
+            return headers.Count;
         }
 
         public int GetContentLength()
         {
-            throw new NotImplementedException();
+            if (contentLength <= 0)
+            {
+                contentLength = 0;
+            }
+            return contentString.Length;
         }
 
         public string GetContentType()
         {
-            throw new NotImplementedException();
+            if (!headers.ContainsKey(contentType))
+            {
+                contentType = "";
+            }
+            return headers[contentType];
         }
 
         public Stream GetContentStream()
         {
-            throw new NotImplementedException();
+            if (contentLength > 0)
+            {
+                char[] result = new char[contentLength];
+                sr.Read(result, 0, contentLength);
+                contentString = new string(result);
+                contentBytes = Encoding.UTF8.GetBytes(contentString);
+                contentStream = new MemoryStream(contentLength);
+            }
+            return contentStream;
         }
 
         public string GetContentString()
         {
-            throw new NotImplementedException();
+            if (contentLength > 0)
+            {
+                char[] result = new char[contentLength];
+                sr.Read(result, 0, contentLength);
+                contentString = new string(result);
+            }
+            return contentString;
         }
-
         public byte[] GetContentBytes()
         {
-            throw new NotImplementedException();
+            if (contentLength > 0)
+            {
+                char[] result = new char[contentLength];
+                sr.Read(result, 0, contentLength);
+                contentString = new string(result);
+                contentBytes = Encoding.UTF8.GetBytes(contentString);
+            }
+            return contentBytes;
         }
     }
 }
+
