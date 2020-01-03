@@ -124,8 +124,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
             Assert.That(obj.GetIsValid(), Is.True);
-            Assert.That(obj.GetUrl(), Is.Not.Null);
-            Assert.That(obj.GetUrl().RawUrl, Is.EqualTo("/"));
+            Assert.That(obj.Url(), Is.Not.Null);
+            Assert.That(obj.Url().RawUrl, Is.EqualTo("/"));
         }
 
         [Test]
@@ -134,8 +134,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetRequest(RequestHelper.GetValidRequestStream("/foo.html?a=1&b=2"));
             Assert.That(obj, Is.Not.Null, "IUEB2.GetRequest returned null");
             Assert.That(obj.GetIsValid(), Is.True);
-            Assert.That(obj.GetUrl(), Is.Not.Null);
-            Assert.That(obj.GetUrl().RawUrl, Is.EqualTo("/foo.html?a=1&b=2"));
+            Assert.That(obj.Url(), Is.Not.Null);
+            Assert.That(obj.Url().RawUrl, Is.EqualTo("/foo.html?a=1&b=2"));
         }
         #endregion
 
@@ -154,7 +154,7 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
-            Assert.Throws(Is.InstanceOf<Exception>(), () => { var tmp = obj.StatusCode; });
+            Assert.Throws(Is.InstanceOf<Exception>(), () => { var tmp = obj.GetStatusCode(); });
         }
 
         [Test]
@@ -163,8 +163,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
-            obj.StatusCode = 404;
-            Assert.That(obj.StatusCode, Is.EqualTo(404));
+            obj.SetStatusCode(404);
+            Assert.That(obj.GetStatusCode(), Is.EqualTo(404));
         }
 
         [Test]
@@ -173,8 +173,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
-            obj.StatusCode = 200;
-            Assert.That(obj.Status.ToUpper(), Is.EqualTo("200 OK"));
+            obj.SetStatusCode(200);
+            Assert.That(obj.GetStatus().ToUpper(), Is.EqualTo("200 OK"));
         }
 
         [Test]
@@ -183,8 +183,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
-            obj.StatusCode = 404;
-            Assert.That(obj.Status.ToUpper(), Is.EqualTo("404 NOT FOUND"));
+            obj.SetStatusCode(404);
+            Assert.That(obj.GetStatus().ToUpper(), Is.EqualTo("404 NOT FOUND"));
         }
 
         [Test]
@@ -193,8 +193,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
-            obj.StatusCode = 500;
-            Assert.That(obj.Status.ToUpper(), Is.EqualTo("500 INTERNAL SERVER ERROR"));
+            obj.SetStatusCode(500);
+            Assert.That(obj.GetStatus().ToUpper(), Is.EqualTo("500 INTERNAL SERVER ERROR"));
         }
 
         [Test]
@@ -204,9 +204,9 @@ namespace BIF.SWE1.UnitTests
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
             obj.AddHeader("foo", "bar");
-            Assert.That(obj.Headers, Is.Not.Null);
-            Assert.That(obj.Headers.ContainsKey("foo"), Is.True);
-            Assert.That(obj.Headers["foo"], Is.EqualTo("bar"));
+            Assert.That(obj.GetHeaders(), Is.Not.Null);
+            Assert.That(obj.GetHeaders().ContainsKey("foo"), Is.True);
+            Assert.That(obj.GetHeaders()["foo"], Is.EqualTo("bar"));
         }
 
         [Test]
@@ -216,13 +216,13 @@ namespace BIF.SWE1.UnitTests
             Assert.That(obj, Is.Not.Null, "IUEB2.GetResponse returned null");
 
             obj.AddHeader("foo", "bar");
-            Assert.That(obj.Headers, Is.Not.Null);
-            Assert.That(obj.Headers.ContainsKey("foo"), Is.True);
-            Assert.That(obj.Headers["foo"], Is.EqualTo("bar"));
+            Assert.That(obj.GetHeaders(), Is.Not.Null);
+            Assert.That(obj.GetHeaders().ContainsKey("foo"), Is.True);
+            Assert.That(obj.GetHeaders()["foo"], Is.EqualTo("bar"));
 
             obj.AddHeader("foo", "override");
-            Assert.That(obj.Headers.ContainsKey("foo"), Is.True);
-            Assert.That(obj.Headers["foo"], Is.EqualTo("override"));
+            Assert.That(obj.GetHeaders().ContainsKey("foo"), Is.True);
+            Assert.That(obj.GetHeaders()["foo"], Is.EqualTo("override"));
         }
         #endregion
     }

@@ -21,7 +21,7 @@ namespace BIF.SWE1.Interfaces
         /// <summary>
         /// Returns a URL object of the request. Never returns null.
         /// </summary>
-        IUrl GetUrl();
+        IUrl Url();
 
         /// <summary>
         /// Returns the request header. Never returns null. All keys must be lower case.

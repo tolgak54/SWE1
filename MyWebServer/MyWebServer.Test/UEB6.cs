@@ -114,9 +114,9 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentType, Is.EqualTo("text/html"));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentType(), Is.EqualTo("text/html"));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
         }
 
         [Test]
@@ -136,9 +136,9 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentType, Is.EqualTo("text/xml"));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentType(), Is.EqualTo("text/xml"));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
         }
         #endregion
         
@@ -179,8 +179,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
         }
 
         [Test]
@@ -200,8 +200,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             var body = GetBody(resp);
             Assert.That(body.ToString(), Does.Contain("Orte gefunden")); // 42 Orte gefunden
@@ -224,8 +224,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             var body = GetBody(resp);
             Assert.That(body.ToString(), Does.Contain("Bitte geben Sie eine Anfrage ein"));
@@ -271,8 +271,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             StringBuilder body = GetBody(resp);
             Assert.That(body.ToString(), Does.Contain(textToTest.ToLower()));
@@ -295,8 +295,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             StringBuilder body = GetBody(resp);
             Assert.That(body.ToString(), Does.Contain("Bitte geben Sie einen Text ein"));

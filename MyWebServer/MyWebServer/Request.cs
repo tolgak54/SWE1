@@ -8,221 +8,184 @@ namespace MyWebServer
 {
     class Request : IRequest
     {
-        bool isValid;
-        string req;
-        string line;
-        StreamReader sr;
-        string method;
-        string userAgent;
-        int contentLength;
-        string contentType;
-        IUrl myUrl;
-        string contentString;
-        Stream contentStream;
-        byte[] contentBytes;
-        List<string> listOfHeaders;
-        Dictionary<string, string> headers;
-
-        public Request(Stream request)
+        public bool IsValid
         {
-            listOfHeaders = new List<string>();
-            sr = new StreamReader(request, Encoding.UTF8);
-            while ((line = sr.ReadLine()) != null)
-            {
-                req += line;
-                listOfHeaders.Add(line);
-            }
-            listOfHeaders.RemoveAt(0);
-            listOfHeaders.Remove("");
-        }
-        public bool GetIsValid()
-        {
-            string[] tmp = req.Split('/');
-            if (req.Length <= 0 | req == "")
-            {
-                isValid = false;
-            }
-            else if (tmp.Length <= 1)
-            {
-                isValid = false;
-            }
-            //Vereinfachen
-            else if (tmp[0].ToUpper() == "GET ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "POST ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "HEAD ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "PUT ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "DELETE ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "TRACE ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "OPTIONS ")
-            {
-                isValid = true;
-            }
-            else if (tmp[0].ToUpper() == "CONNECT ")
-            {
-                isValid = true;
-            }
-            return isValid;
+            get;
+            private set;
         }
 
-        public string GetMethod()
+        public string Method
         {
-            string[] tmp = req.Split('/');
-            // spliten im Konstruktor
-            if (tmp.Length <= 1)
-            {
-                return "";
-            }
-            else
-            {
-                method = tmp[0].ToUpper();
-                method = method.Trim();
-            }
-            return method;
+            get;
+            private set;
         }
-        public IUrl GetUrl()
+        public IUrl Url
         {
-            string[] tmp = req.Split(' ');
-            if (tmp.Length > 1)
-            {
-                myUrl = new Url(tmp[1]);
-            }
-            return myUrl;
+            get;
+            private set;
         }
 
-        public IDictionary<string, string> GetHeaders()
+        public IDictionary<string, string> Headers
         {
-            if (headers == null)
+            get;
+            private set;
+        }
+        public string UserAgent
+        {
+            get
             {
-                headers = new Dictionary<string, string>();
-                foreach (var item in listOfHeaders)
+                if (!Headers.ContainsKey(""))
                 {
-                    if (item.Contains(":"))
-                    {
-                        string[] a = item.Split(':');
-                        string key = a[0].ToLower();
-                        string value = a[1].Trim();
-                        headers.Add(key, value);
-                    }
+                    throw new InvalidOperationException("No UserAgent in Header");
                 }
+                return Headers[""];
             }
-            return headers;
-        }
-        public string GetUserAgent()
-        {
-            if (headers == null)
-            {
-                headers = new Dictionary<string, string>();
-                foreach (var item in listOfHeaders)
-                {
-                    if (item.Contains(":"))
-                    {
-                        string[] a = item.Split(':');
-                        string key = a[0];
-                        string value = a[1].Trim();
-                        headers.Add(key, value);
-                    }
-                }
-                if (headers.ContainsKey("User-Agent"))
-                {
-                    userAgent = headers["User-Agent"];
-                }
-            }
-            return userAgent;
         }
 
-        public int GetHeaderCount()
+        public int HeaderCount
         {
-            return headers.Count;
+            get
+            {
+                return Headers.Count;
+            }
+        }
+
+        public int ContentLength
+        {
+            get
+            {
+                if (!Headers.ContainsKey(""))
+                {
+                    return 0;
+                }
+                return int.Parse(Headers[""]);
+            }
+        }
+
+        public string ContentType
+        {
+            get
+            {
+                if (!Headers.ContainsKey(""))
+                {
+                    throw new InvalidOperationException("No Content Type in Header");
+                }
+                return Headers[""];
+            }
+        }
+
+        public Stream ContentStream
+        {
+            get;
+            private set;
+        }
+
+        public string ContentString
+        {
+            get;
+            private set;
+        }
+        public byte[] ContentBytes
+        {
+            get;
+            private set;
+        }
+
+        public byte[] GetContentBytes()
+        {
+            return ContentBytes;
         }
 
         public int GetContentLength()
         {
-            if (headers == null)
-            {
-                headers = new Dictionary<string, string>();
-                foreach (var item in listOfHeaders)
-                {
-                    if (item.Contains(":"))
-                    {
-                        string[] a = item.Split(':');
-                        string key = a[0];
-                        string value = a[1];
-                        headers.Add(key, value);
-                    }
-                }
-                if (headers.ContainsKey("Content-Length"))
-                {
-                    contentLength = Convert.ToInt32(headers["Content-Length"]);
-                }
-            }
-            return contentLength;
-        }
-
-        public string GetContentType()
-        {
-            if (headers == null)
-            {
-                headers = new Dictionary<string, string>();
-                foreach (var item in listOfHeaders)
-                {
-                    if (item.Contains(":"))
-                    {
-                        string[] a = item.Split(':');
-                        string key = a[0];
-                        string value = a[1].Trim();
-                        headers.Add(key, value);
-                    }
-                }
-                if (headers.ContainsKey("Content-Type"))
-                {
-                    contentType = headers["Content-Type"];
-                }
-            }
-            return contentType;
+            return ContentLength;
         }
 
         public Stream GetContentStream()
         {
-            contentBytes = GetContentBytes();
-            contentBytes[0] = 0;
-            contentStream = new MemoryStream(GetContentBytes());
-            return contentStream;
+            return ContentStream;
         }
 
         public string GetContentString()
         {
-            foreach (var item in listOfHeaders)
+            return ContentString;
+        }
+
+        public string GetContentType()
+        {
+            return ContentType;
+        }
+
+        public int GetHeaderCount()
+        {
+            return HeaderCount;
+        }
+
+        public IDictionary<string, string> GetHeaders()
+        {
+            return Headers;
+        }
+
+        public bool GetIsValid()
+        {
+            return IsValid;
+        }
+
+        public string GetMethod()
+        {
+            return Method;
+        }
+
+        public string GetUserAgent()
+        {
+            return UserAgent;
+        }
+
+        IUrl IRequest.Url()
+        {
+            return Url;
+        }
+        public Request(Stream request)
+        {
+            StreamReader sr = new StreamReader(request, Encoding.UTF8);
+            if (Headers == null)
             {
-                if (!item.Contains(":"))
+                Headers = new Dictionary<string, string>();
+            }
+
+            int cnt = 0;
+            string line;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+                if (string.IsNullOrEmpty(line))
                 {
-                    contentString += item;
+                    break;
+                }
+
+                if (line.Contains(':') && cnt > 0)
+                {
+                    string[] dataFromHeader = line.Split(':');
+                    string dictKey = dataFromHeader[0].Trim().ToLower();
+                    string dictValue = dataFromHeader[1].Trim();
+                    Headers.Add(dictKey, dictValue);
+                }
+                else
+                {
+                    string[] paramArray = line.Split(' ');
+                    if (paramArray.Length >= 1)
+                    {
+                        Method = paramArray[0].ToUpper();
+                    }
+                    if (paramArray.Length >= 2)
+                    {
+                        string myUrl = line.Remove(0, line.IndexOf(' '));
+                        myUrl = myUrl.Remove(myUrl.LastIndexOf(' ')).Trim();
+                        Url = new Url(myUrl);
+                    }
                 }
             }
-            return contentString;
-        }
-        public byte[] GetContentBytes()
-        {
-            contentString = "";
-            contentBytes = Encoding.UTF8.GetBytes(contentString);
-            return Encoding.UTF8.GetBytes(GetContentString());
         }
     }
 }

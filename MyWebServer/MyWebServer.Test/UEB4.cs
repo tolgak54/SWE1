@@ -96,7 +96,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = Encoding.UTF8.GetBytes(string.Format("Hello World, my GUID is {0}! Ignore UTF-8 chars!", Guid.NewGuid()));
             obj.SetContent(content);
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
 
             using (var ms = new MemoryStream())
             {
@@ -131,7 +131,7 @@ namespace BIF.SWE1.UnitTests
             var bytes = Encoding.UTF8.GetBytes(string.Format("Hello World, my GUID is {0}! Ignore UTF-8 chars!", Guid.NewGuid()));
             var content = new MemoryStream(bytes);
             obj.SetContent(content);
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
 
             using (var ms = new MemoryStream())
             {

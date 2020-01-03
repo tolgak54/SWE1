@@ -78,8 +78,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             using (var ms = new MemoryStream())
             {
@@ -105,7 +105,7 @@ namespace BIF.SWE1.UnitTests
             { 
                 var resp = plugin.Handle(req);
                 Assert.That(resp, Is.Not.Null);
-                Assert.That(resp.StatusCode, Is.Not.EqualTo(200));
+                Assert.That(resp.GetStatusCode(), Is.Not.EqualTo(200));
             }
             else
             {
@@ -154,8 +154,8 @@ namespace BIF.SWE1.UnitTests
             Assert.That(plugin, Is.Not.Null);
             var resp = plugin.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace BIF.SWE1.UnitTests
             Assert.That(obj.CanHandle(req), Is.GreaterThan(0.0f).And.LessThanOrEqualTo(1.0f));
             var resp = obj.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
         }
 
         [Test]
@@ -271,8 +271,8 @@ namespace BIF.SWE1.UnitTests
             Assert.That(obj.CanHandle(req), Is.GreaterThan(0.0f).And.LessThanOrEqualTo(1.0f));
             var resp = obj.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.EqualTo(static_file_content.Length));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.EqualTo(static_file_content.Length));
 
             using (var ms = new MemoryStream())
             {
@@ -308,7 +308,7 @@ namespace BIF.SWE1.UnitTests
             {
                 var resp = obj.Handle(req);
                 Assert.That(resp, Is.Not.Null);
-                Assert.That(resp.StatusCode, Is.EqualTo(404));
+                Assert.That(resp.GetStatusCode(), Is.EqualTo(404));
             }
             else
             {

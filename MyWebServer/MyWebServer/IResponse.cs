@@ -11,27 +11,39 @@ namespace BIF.SWE1.Interfaces
         /// <summary>
         /// Returns a writable dictionary of the response headers. Never returns null.
         /// </summary>
-        IDictionary<string, string> Headers { get; }
+        IDictionary<string, string> GetHeaders();
 
         /// <summary>
         /// Returns the content length or 0 if no content is set yet.
         /// </summary>
-        int ContentLength { get; }
+        int GetContentLength();
 
         /// <summary>
         /// Gets or sets the content type of the response.
         /// </summary>
         /// <exception cref="InvalidOperationException">A specialized implementation may throw a InvalidOperationException when the content type is set by the implementation.</exception>
-        string ContentType { get; set; }
+        string GetContentType();
+
+        /// <summary>
+        /// Gets or sets the content type of the response.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">A specialized implementation may throw a InvalidOperationException when the content type is set by the implementation.</exception>
+        void SetContentType(string value);
 
         /// <summary>
         /// Gets or sets the current status code. An Exceptions is thrown, if no status code was set.
         /// </summary>
-        int StatusCode { get; set; }
+        int GetStatusCode();
+
+        /// <summary>
+        /// Gets or sets the current status code. An Exceptions is thrown, if no status code was set.
+        /// </summary>
+        void SetStatusCode(int value);
+
         /// <summary>
         /// Returns the status code as string. (200 OK)
         /// </summary>
-        string Status { get; }
+        string GetStatus();
 
         /// <summary>
         /// Adds or replaces a response header in the headers dictionary.
@@ -43,7 +55,12 @@ namespace BIF.SWE1.Interfaces
         /// <summary>
         /// Gets or sets the Server response header. Defaults to "BIF-SWE1-Server".
         /// </summary>
-        string ServerHeader { get; set; }
+        string GetServerHeader();
+
+        /// <summary>
+        /// Gets or sets the Server response header. Defaults to "BIF-SWE1-Server".
+        /// </summary>
+        void SetServerHeader(string value);
 
         /// <summary>
         /// Sets a string content. The content will be encoded in UTF-8.

@@ -1,22 +1,21 @@
 ﻿using BIF.SWE1.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyWebServer
 {
     class Url: IUrl
     {
+        string fragment;
+        string fileName;
+        string extension;
         string rawUrl;
         string path;
         Dictionary<string, string> parameterDict;
         string[] segments;
-        public Url(string path)
-        {
-            this.rawUrl = path;
-        }
-
-        public string RawUrl 
+        public string RawUrl
         {
             get
             {
@@ -27,50 +26,14 @@ namespace MyWebServer
         {
             get
             {
-                if (rawUrl == null)
-                {
-                    rawUrl = "";
-                }
-                if (rawUrl.Contains("?")==true)
-                {
-                    return PathTwo;
-                }
-                string[] temp2 = rawUrl.Split('#');
-                return temp2[0];
-            }
-        }
-
-        public string PathTwo
-        {
-            get
-            {
-                string[] tmp = rawUrl.Split('?');
-                return tmp[0];
+                return path;
             }
         }
         public IDictionary<string, string> Parameter
         {
             get
             {
-                if (parameterDict == null)
-                {
-                    parameterDict = new Dictionary<string, string>();
-                    if (rawUrl == null)
-                    {
-                        rawUrl = "";
-                    }
-                    string[] tmp = rawUrl.Split('?');
-                    if (tmp.Length == 2)
-                    {
-                        string[] tmp2 = tmp[1].Split('&');
-                        for (int i = 0; i < tmp2.Length; i++)
-                        {
-                            string[] tmp3 = tmp2[i].Split('=');
-                            parameterDict.Add(tmp3[0], tmp3[1]);
-                        }
-                    }
-                }
-                    return parameterDict;
+                return parameterDict;
             }
         }
 
@@ -78,7 +41,7 @@ namespace MyWebServer
         {
             get
             {
-                return Parameter.Count;
+                return parameterDict.Count;
             }
         }
 
@@ -86,22 +49,7 @@ namespace MyWebServer
         {
             get
             {
-                if (rawUrl==null)
-                {
-                    rawUrl = "";
-                }
-                List<string> resultList = new List<string>();
-                string temp = rawUrl.Remove(0, 1);
-                segments = temp.Split('/');
-                //if (segments.Length <= 0)
-                //{
-                //    segments[0] = "0";
-                //}
-                foreach (var item in segments)
-                {
-                    resultList.Add(item);
-                }
-                return resultList.ToArray();
+                return segments;
             }
         }
 
@@ -109,18 +57,7 @@ namespace MyWebServer
         {
             get
             {
-                if (path==null)
-                {
-                    path = "";
-                }
-                if (segments[segments.Length - 1].Contains(".")==false)
-                {
-                    return "";
-                }
-                string result = segments[segments.Length - 1];
-                string[] tmp = result.Split('#');
-                string fileNameWithExt = tmp[0];
-                return fileNameWithExt;
+                return fileName;
             }
         }
 
@@ -128,39 +65,69 @@ namespace MyWebServer
         {
             get
             {
-                if (path == null)
-                {
-                    path = "";
-                }
-                if (segments[segments.Length - 1].Contains(".") == false)
-                {
-                    return "";
-                }
-                string result = segments[segments.Length - 1];
-                string[] tmp = result.Split('#');
-                string fileNameWithExt = tmp[0];
-                string[] tmp2 = fileNameWithExt.Split('.');
-                string ext = tmp2[1];
-                return "." + ext;
+                return extension;
             }
         }
 
         public string Fragment
         {
-            get 
+            get
             {
-                if (rawUrl == null)
-                {
-                    rawUrl = "";
-                }
-                //if (segments[segments.Length - 1].Contains(".") == false)
-                //{
-                //    return "";
-                //}
-                //string result = segments[segments.Length - 1];
-                string[] tmp = rawUrl.Split('#');
-                string fragment = tmp[1];
                 return fragment;
+            }
+        }
+        public Url(string rawUrl)
+        {
+            this.rawUrl = rawUrl;
+            parameterDict = new Dictionary<string, string>();
+            if (rawUrl == null)
+            {
+                return;
+            }
+            this.path = rawUrl;
+
+            string[] tmp = rawUrl.Split('?');
+            if (tmp.Length > 0)
+            {
+                path = tmp[0];
+            }
+
+            segments = path?.Split(new char[] { '/', '\\' }).Skip(1).ToArray() ?? new string[] { };
+            string[] tmpfrgmnt = path.Split('#');
+            if (tmpfrgmnt.Length > 1)
+            {
+                fragment = tmpfrgmnt[1];
+                path = tmpfrgmnt[0];
+            }
+
+            if (tmp.Length > 1)
+            {
+                string[] listOfParameters = tmp[1].Split('&');
+                string[] resArray;
+                foreach (string prmt in listOfParameters)
+                {
+                    resArray = prmt.Split('=');
+                    if (resArray.Length > 1)
+                    {
+                        parameterDict.Add(resArray[0], resArray[1]);
+                    }
+                    else if (resArray.Length > 0)
+                    {
+                        parameterDict.Add(resArray[0], "");
+                    }
+                }
+            }
+
+            string end = segments.Last();
+            if (end != null && end.Contains('.'))
+            {
+                fileName = end;
+            }
+
+            string[] tmpExtns = fileName.Split('.');
+            if (tmpExtns.Length >= 1)
+            {
+                extension = "." + tmpExtns.Last();
             }
         }
     }

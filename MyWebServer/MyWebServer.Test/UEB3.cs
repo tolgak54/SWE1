@@ -34,8 +34,8 @@ namespace BIF.SWE1.UnitTests
             Assert.That(obj.CanHandle(req), Is.GreaterThan(0.0f).And.LessThanOrEqualTo(1.0f));
             var resp = obj.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
 
             using (var ms = new MemoryStream())
             {
@@ -98,8 +98,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.ContentType = "text/plain";
-            Assert.That(obj.ContentType, Is.EqualTo("text/plain"));
+            obj.SetContentType("text/plain");
+            Assert.That(obj.GetContentType(), Is.EqualTo("text/plain"));
         }
 
         [Test]
@@ -108,8 +108,8 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.ServerHeader = "foo";
-            Assert.That(obj.ServerHeader, Is.EqualTo("foo"));
+            obj.SetServerHeader("foo");
+            Assert.That(obj.GetServerHeader(), Is.EqualTo("foo"));
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            Assert.That(obj.ServerHeader, Is.EqualTo("BIF-SWE1-Server"));
+            Assert.That(obj.GetServerHeader(), Is.EqualTo("BIF-SWE1-Server"));
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = "Hello World, my GUID is " + Guid.NewGuid() + "!";
             obj.SetContent(content);
-            Assert.That(obj.ContentLength, Is.EqualTo(Encoding.UTF8.GetByteCount(content)));
+            Assert.That(obj.GetContentLength(), Is.EqualTo(Encoding.UTF8.GetByteCount(content)));
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = "Test: äöüÄÖÜß";
             obj.SetContent(content);
-            Assert.That(obj.ContentLength, Is.EqualTo(Encoding.UTF8.GetByteCount(content)));
+            Assert.That(obj.GetContentLength(), Is.EqualTo(Encoding.UTF8.GetByteCount(content)));
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = "Hello World, my GUID is " + Guid.NewGuid() + "!";
             obj.SetContent(content);
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
 
             using (var ms = new MemoryStream())
             {
@@ -183,7 +183,7 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.StatusCode = 404;
+            obj.SetStatusCode(404);
 
             using (var ms = new MemoryStream())
             {
@@ -205,7 +205,7 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.StatusCode = 404;
+            obj.SetStatusCode(404);
             var header = "X-Test-Header-" + Guid.NewGuid();
             var header_value = "val_" + Guid.NewGuid();
             obj.AddHeader(header, header_value);
@@ -235,10 +235,10 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
             var header = "Server";
             var header_value = "server_" + Guid.NewGuid();
-            obj.ServerHeader = header_value;
+            obj.SetServerHeader(header_value);
 
             using (var ms = new MemoryStream())
             {
@@ -267,7 +267,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = "Hello World, my GUID is " + Guid.NewGuid() + "!";
             obj.SetContent(content);
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
 
             using (var ms = new MemoryStream())
             {
@@ -297,9 +297,9 @@ namespace BIF.SWE1.UnitTests
             var obj = CreateInstance().GetResponse();
             Assert.That(obj, Is.Not.Null, "IUEB3.GetResponse returned null");
 
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
             // Setting a content type but no content is not allowed
-            obj.ContentType = "text/html";
+            obj.SetContentType("text/html");
 
             using (var ms = new MemoryStream())
             {
@@ -315,7 +315,7 @@ namespace BIF.SWE1.UnitTests
 
             var content = string.Format("Hello World, my GUID is {0}! And I'll add UTF-8 chars: öäüÖÄÜß!", Guid.NewGuid());
             obj.SetContent(content);
-            obj.StatusCode = 200;
+            obj.SetStatusCode(200);
 
             using (var ms = new MemoryStream())
             {
@@ -409,8 +409,8 @@ namespace BIF.SWE1.UnitTests
 
             var resp = obj.Handle(req);
             Assert.That(resp, Is.Not.Null);
-            Assert.That(resp.StatusCode, Is.EqualTo(200));
-            Assert.That(resp.ContentLength, Is.GreaterThan(0));
+            Assert.That(resp.GetStatusCode(), Is.EqualTo(200));
+            Assert.That(resp.GetContentLength(), Is.GreaterThan(0));
         }
 
         [Test]
