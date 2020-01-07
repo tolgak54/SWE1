@@ -11,11 +11,11 @@ namespace MyWebServer
     {
         public PluginManager()
         {
-            Add(new Plugins.TestPlugin());
-            Add(new Plugins.StaticFilePlugin());
-            Add(new Plugins.LowerPlugin());
-            Add(new Plugins.TemperaturePlugin());
-            Add(new Plugins.NavigationPlugin());
+            Add(new TestPlugin());
+            Add(new StaticFilePlugin());
+            Add(new LowerPlugin());
+            Add(new TemperaturePlugin());
+            Add(new NavigationPlugin());
 
             LoadPlugins();
         }
